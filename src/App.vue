@@ -1,29 +1,38 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <el-row>
+      <el-button round>圆角按钮</el-button>
+      <el-button type="primary" round>主要按钮</el-button>
+      <el-button type="success" round>成功按钮</el-button>
+      <el-button type="info" round>信息按钮</el-button>
+      <el-button type="warning" round>警告按钮</el-button>
+      <el-button type="danger" round>危险按钮</el-button>
+    </el-row>
+    <el-switch
+      v-model="value"
+      active-color="#13ce66"
+      inactive-color="#ff4949">
+    </el-switch>
+    <div class="block">
+      <el-slider
+        v-model="slider"
+        show-input>
+      </el-slider>
+  </div>
+    <router-view />
   </div>
 </template>
 
-<style lang="less">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+export default {
+  data () {
+    return {
+      value: true,
+      slider: 0
     }
   }
 }
+</script>
+
+<style lang="less">
 </style>
