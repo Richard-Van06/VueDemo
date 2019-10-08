@@ -11,6 +11,7 @@ import store from './store'
 import ElementUI from 'element-ui'
 // 导入 ele样式
 import 'element-ui/lib/theme-chalk/index.css'
+
 // 使用ele
 Vue.use(ElementUI)
 

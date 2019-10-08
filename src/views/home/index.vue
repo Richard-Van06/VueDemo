@@ -1,14 +1,16 @@
 <template>
-  <div id="app">
-    <p>哈哈</p>
-    <router-view />
+  <div>
+    <!-- 主页 -->
+    <p>我是主页</p>
   </div>
 </template>
 
 <script>
 export default {
+
 }
 </script>
 
-<style lang="less">
+<style>
+
 </style>
