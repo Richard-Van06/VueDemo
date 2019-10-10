@@ -20,7 +20,7 @@
           </el-col>
           <el-col :span="8" :offset="2">
             <!-- :offset : 栅格左侧的间隔格数, 默认为0 -->
-            <el-button class="col-btn">获取验证码</el-button>
+            <el-button class="col-btn" @click="getCode">获取验证码</el-button>
           </el-col>
         </el-row>
       </el-form-item>
@@ -64,6 +64,7 @@ export default {
         ],
         read: [
           { required: true, message: '请先阅读条款', trigger: 'change' },
+          // pattern: 正则表达式
           { pattern: /true/, message: '请先阅读条款', trigger: 'change' }
         ]
       }
@@ -111,6 +112,21 @@ export default {
         this.$router.push('/')
       }).catch(err => {
         console.log(err)
+      })
+    },
+    getCode () {
+      // 获取form表单
+      // validaeField(field,callback)
+      // field: 要验证的字段
+      // callback: 验证后的回调函数
+      //    errMsg: 验证不通过时的提示文本
+      this.$refs['form'].validateField('mobile', errMsg => {
+        if (errMsg.trim().length > 0) {
+          // 会出现 验证不通过时的提示文本
+          return
+        }
+        // 验证通过
+        console.log('这是通过后的代码')
       })
     }
   }
