@@ -28,6 +28,8 @@
 </template>
 
 <script>
+// 导入 axios
+import axios from 'axios'
 export default {
   data () {
     return {
@@ -48,6 +50,7 @@ export default {
     }
   },
   methods: {
+    // 用户登录
     login () {
       // 获取el-from元素
       // 用this.$refs["from"] / this.$refs.from也可以
@@ -57,10 +60,32 @@ export default {
         // 如果结果为 true, 说明验证通过
         if (valid === true) {
           console.log('验证通过')
+          // 将数据提交到服务器
+          this.submitData()
+          this.$message({
+            message: '登录成功!',
+            type: 'success'
+          })
         } else {
           console.log('验证不通过!')
           // return
+          this.$message.error('手机号码或验证码错误!')
         }
+      })
+    },
+    // 数据提交
+    submitData () {
+      // 发送请求
+      axios({
+        url: 'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
+        method: 'POST',
+        data: this.form
+      }).then(res => {
+        console.log(res)
+        // 只要进入这个方法中, 说明登录成功
+        this.$router.push('/')
+      }).catch(err => {
+        console.log(err)
       })
     }
   }
