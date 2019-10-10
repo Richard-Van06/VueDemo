@@ -24,6 +24,11 @@
           </el-col>
         </el-row>
       </el-form-item>
+      <el-form-item prop="read">
+        <el-checkbox v-model="form.read" name="type">
+          我已阅读并同意<a href="#">用户协议</a>和<a href="#">隐私条款</a>
+        </el-checkbox>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="login" :loading="loginloading" class="login-btn">登录</el-button>
       </el-form-item>
@@ -40,8 +45,10 @@ export default {
     return {
       // 表单参数
       form: {
+        // 记得要在元素中填写 porp=""
         mobile: '13911111111',
-        code: '246810'
+        code: '246810',
+        read: false
       },
       // 控制登录按钮 登录时的加载状态
       loginloading: false,
@@ -54,6 +61,10 @@ export default {
         code: [
           { required: true, message: '验证码不能为空', trigger: 'blur' },
           { min: 6, max: 6, message: '请输入正确的验证码', trigger: 'blur' }
+        ],
+        read: [
+          { required: true, message: '请先阅读条款', trigger: 'change' },
+          { pattern: /true/, message: '请先阅读条款', trigger: 'change' }
         ]
       }
     }
