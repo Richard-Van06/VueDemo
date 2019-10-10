@@ -15,8 +15,13 @@
       </el-form-item>
       <el-form-item prop="code">
         <el-row>
-          <el-col :span="14"><el-input v-model="form.code" placeholder="请输入密码"></el-input></el-col>
-          <el-col :span="6"><el-button>获取验证码</el-button></el-col>
+          <el-col :span="14">
+            <el-input v-model="form.code" placeholder="请输入密码"></el-input>
+          </el-col>
+          <el-col :span="8" :offset="2">
+            <!-- :offset : 栅格左侧的间隔格数, 默认为0 -->
+            <el-button class="col-btn">获取验证码</el-button>
+          </el-col>
         </el-row>
       </el-form-item>
       <el-form-item>
@@ -34,8 +39,8 @@ export default {
   data () {
     return {
       form: {
-        mobile: '',
-        code: ''
+        mobile: '13911111111',
+        code: '246810'
       },
       rules: {
         mobile: [
@@ -113,6 +118,10 @@ export default {
       img {
       width: 150px;
       }
+    }
+
+    .col-btn {
+      width: 100%;
     }
 
     .login-btn {
