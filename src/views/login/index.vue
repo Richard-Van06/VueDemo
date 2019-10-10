@@ -25,7 +25,7 @@
         </el-row>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="login" class="login-btn">登录</el-button>
+        <el-button type="primary" @click="login" :loading="loginloading" class="login-btn">登录</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -38,10 +38,14 @@ import axios from 'axios'
 export default {
   data () {
     return {
+      // 表单参数
       form: {
         mobile: '13911111111',
         code: '246810'
       },
+      // 控制登录按钮 登录时的加载状态
+      loginloading: false,
+      // 定义规则
       rules: {
         mobile: [
           { required: true, message: '请输入手机号码', trigger: 'blur' },
@@ -67,10 +71,6 @@ export default {
           console.log('验证通过')
           // 将数据提交到服务器
           this.submitData()
-          this.$message({
-            message: '登录成功!',
-            type: 'success'
-          })
         } else {
           console.log('验证不通过!')
           // return
@@ -80,6 +80,8 @@ export default {
     },
     // 数据提交
     submitData () {
+      // 将加载状态设置为true
+      this.loginloading = true
       // 发送请求
       axios({
         url: 'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
@@ -88,6 +90,13 @@ export default {
       }).then(res => {
         console.log(res)
         // 只要进入这个方法中, 说明登录成功
+        this.$message({
+          message: '登录成功!',
+          type: 'success'
+        })
+        // 将加载状态改成false
+        this.loginloading = false
+        // 跳转到主页
         this.$router.push('/')
       }).catch(err => {
         console.log(err)
