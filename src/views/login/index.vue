@@ -20,7 +20,10 @@
           </el-col>
           <el-col :span="8" :offset="2">
             <!-- :offset : 栅格左侧的间隔格数, 默认为0 -->
-            <el-button class="col-btn" @click="getCode">获取验证码</el-button>
+            <el-button class="col-btn" @click="getCode" :disabled="!!false">
+              <!-- 判断定时期是否存在 -->
+              {{ timer ? `请等待${codeTime}s` : '获取验证码' }}
+            </el-button>
           </el-col>
         </el-row>
       </el-form-item>
@@ -67,7 +70,11 @@ export default {
           // pattern: 正则表达式
           { pattern: /true/, message: '请先阅读条款', trigger: 'change' }
         ]
-      }
+      },
+      // 倒计时 10s
+      codeTime: 10,
+      // 设置定时器
+      timer: null
     }
   },
   methods: {
@@ -127,6 +134,20 @@ export default {
         }
         // 验证通过
         console.log('这是通过后的代码')
+        // 倒计时--计时器
+        this.timer = setInterval(() => {
+          // 开始倒计时
+          this.codeTime--
+          // 当时间为0, 停止
+          if (this.codeTime <= 0) {
+            // 清除定时器
+            clearTimeout(this.timer)
+            // 重置定时器
+            this.codeTime = 10
+            // 将定时器重置为 null
+            this.timer = null
+          }
+        }, 1000)
       })
     }
   }
