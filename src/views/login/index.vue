@@ -107,7 +107,11 @@ export default {
         method: 'POST',
         data: this.form
       }).then(res => {
-        console.log(res)
+        // console.log(res)
+        // 先获取信息
+        let userInfo = res.data.data
+        // 将用户的信息保存到localstorage 中
+        window.localStorage.setItem('userInfo', JSON.stringify(userInfo))
         // 只要进入这个方法中, 说明登录成功
         this.$message({
           message: '登录成功!',
