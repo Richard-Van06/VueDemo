@@ -10,11 +10,17 @@ import Login from '@/views/login'
 import Layout from '@/views/layout'
 // 导入publish 路由
 import Publish from '@/views/publish/'
+
+// 导入 nprogress
+import nprogress from 'nprogress'
+// 导入样式文件
+import 'nprogress/nprogress.css'
 // 使用路由
 Vue.use(Router)
 
 // 导入并到处一个 router 对象
-export default new Router({
+
+let router = new Router({
   // 设置路由选项
   routes: [
     {
@@ -50,3 +56,36 @@ export default new Router({
     }
   ]
 })
+// router: 路由对象
+// 给路由对象添加导航守卫---> 全局前置导航守卫
+// 当由一个路由跳转到另一个路由时执行
+router.beforeEach((to, from, next) => {
+  // 开启进度条
+  nprogress.start()
+  // to: 要去的路由 从A到B 中的B
+  // from: 发起跳转的路由 从A到B 中的A
+  // next: 函数, 是否执行后面的代码
+  console.log(to)
+  console.log(from)
+  // 排除跳转到登录页面
+  if (to.path !== '/login') {
+    // 得到localstorage 中的userInfo
+    let userInfo = window.localStorage.getItem('userInfo')
+    // 判断用户是否登录:
+    if (!userInfo) {
+      // 如果不存在,说明没有登录过,应该跳转到登录页面
+      router.push('/login')
+    } else {
+      next()
+    }
+  } else {
+    // 执行后续代码
+    next()
+  }
+})
+// 在全局后置钩子中,关闭 进度条
+router.afterEach((to, from) => {
+  // 关闭进度条
+  nprogress.done()
+})
+export default router
