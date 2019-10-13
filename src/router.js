@@ -6,6 +6,10 @@ import Router from 'vue-router'
 // 使用@/+地址 特指src文件中的文件
 import Home from '@/views/home'
 import Login from '@/views/login'
+// 导入layout 路由
+import Layout from '@/views/layout'
+// 导入publish 路由
+import Publish from '@/views/publish/'
 // 使用路由
 Vue.use(Router)
 
@@ -19,14 +23,30 @@ export default new Router({
       redirect: '/home'
     },
     {
+      // 登录路由
       path: '/login',
       name: 'login',
       component: Login
     },
     {
-      path: '/home',
-      name: 'home',
-      component: Home
+      // 布局路由
+      path: '/layout',
+      name: 'layout',
+      component: Layout,
+      // 添加子路由:
+      children: [
+        // 将 home 作为layout的子路由存在
+        { path: '/home',
+          name: 'home',
+          component: Home
+        },
+        {
+          // 添加一个 publish子路由
+          path: '/publish',
+          component: Publish,
+          name: 'publish'
+        }
+      ]
     }
   ]
 })
