@@ -15,6 +15,9 @@ import Publish from '@/views/publish/'
 import nprogress from 'nprogress'
 // 导入样式文件
 import 'nprogress/nprogress.css'
+
+// 导入 list
+import List from '@/views/article/list'
 // 使用路由
 Vue.use(Router)
 
@@ -43,14 +46,16 @@ let router = new Router({
       children: [
         // 将 home 作为layout的子路由存在
         { path: '/home',
-          name: 'home',
           component: Home
         },
         {
           // 添加一个 publish子路由
           path: '/publish',
-          component: Publish,
-          name: 'publish'
+          component: Publish
+        },
+        {
+          path: '/article/list',
+          component: List
         }
       ]
     }
