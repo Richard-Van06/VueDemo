@@ -17,6 +17,53 @@ import '@/styles/index.less'
 // 导入axios
 import axios from 'axios'
 
+// 给 axios 设置基准地址
+axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
+
+// 设置 axios 拦截器
+// 请求拦截器: 发送请求之前执行
+axios.interceptors.request.use(function (config) {
+  console.log('我是请求拦截器')
+  console.log(config)
+  // 请求正常时的逻辑
+  // config: axios 请求服务器的相关信息 如下:
+  // url: 请求的接口地址
+  // method: 请求的方式
+  // baseUrl: 请求的基准地址
+  // headers: Authorization: token
+  // 在请求拦截器中, 执行完逻辑代码之后, 一定要return config
+  // 否则, 请求无法发送(获取不到后台信息)
+
+  // 在请求头中添加token
+  let userInfo = JSON.parse(window.localStorage.getItem('userInfo'))
+  // 判断 只有userInfo 存在时, 才需要添加token
+  if (userInfo) {
+    config.headers.Authorization = `Bearer ${userInfo.token}`
+  }
+  return config
+}, function (error) {
+  // 请求异常时的逻辑
+  return Promise.reject(error)
+})
+
+// 响应拦截器
+axios.interceptors.response.use(function (response) {
+  // 当服务器响应信息回来时 执行
+  // 响应拦截器如果要返回信息  必须要有 return response
+  console.log('我是响应拦截器')
+  console.log(response)
+  // 这个response的内容就是axios请求的数据结果, 即res
+  // 通过axios获得的数据, 可以通过响应拦截器 设置return的内容 如下方:
+  // return {
+  //   name: 'fzp',
+  //   age: 2000
+  // }  // 这个return就是新的获取的数据,是自己设定的. 可以通过axios的返回数据中 获得
+  return response.data.data
+}, function (error) {
+  // 当响应的状态码为400以后时 执行
+  return Promise.reject(error)
+})
+
 // 将axios挂在到 vue 原型中
 // 可以通过this.$fuck 来使用
 //  .vue是 vue中的 组件

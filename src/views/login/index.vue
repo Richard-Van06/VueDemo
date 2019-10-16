@@ -42,10 +42,7 @@
 
 <script>
 // 由于在main.js 中, 把axios添加在vue 的原型中,
-// 因此,不用在其他地方再导入与声明了
-
-// 导入 axios
-// import axios from 'axios'
+// 因此,不用在其他地方再导入与声明了axios
 export default {
   data () {
     return {
@@ -106,7 +103,7 @@ export default {
       this.loginloading = true
       // 发送请求
       this.$http({
-        url: 'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
+        url: '/authorizations',
         method: 'POST',
         data: this.form
       }).then(res => {

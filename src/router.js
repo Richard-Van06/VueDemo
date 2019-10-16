@@ -70,8 +70,8 @@ router.beforeEach((to, from, next) => {
   // to: 要去的路由 从A到B 中的B
   // from: 发起跳转的路由 从A到B 中的A
   // next: 函数, 是否执行后面的代码
-  console.log(to)
-  console.log(from)
+  // console.log(to)
+  // console.log(from)
   // 排除跳转到登录页面
   if (to.path !== '/login') {
     // 得到localstorage 中的userInfo
