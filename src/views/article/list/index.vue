@@ -85,7 +85,7 @@
       <!-- 分页栏 -->
       <!-- el-pagination: 分页组件 background: 背景颜色(boolean)
       :total: 显示的总页数(内部根据页容量自动换算,只需输入总内容条数) -->
-      <el-pagination background layout="prev, pager, next" :total="total_count">
+      <el-pagination @current-change="pageChange" @next-click="nextClick" @prev-click="prevClick" background layout="prev, pager, next" :total="total_count">
       </el-pagination>
     </el-card>
   </div>
@@ -109,7 +109,11 @@ export default {
       // 文章列表保存在 datalist 默认为空
       dataList: [],
       // 文章总条数 默认为0
-      total_count: 0
+      total_count: 0,
+      // 分页设置
+      page: 1, // 默认为第一页
+      // 每页的条数
+      per_page: 10 // 每页显示的内容20条
     }
   },
   methods: {
@@ -121,7 +125,11 @@ export default {
       // token要写在请求头中, 以键值对的方式携带  Authorization: token
       this.$http({
         url: '/articles',
-        method: 'GET'
+        method: 'GET',
+        params: {
+          page: this.page,
+          per_page: this.per_page
+        }
         // headers: {
         //   // 模板字符串 `${}`
         //   Authorization: `Bearer ${userInfo.token}`
@@ -137,6 +145,31 @@ export default {
         // 数据简化, 同上
         this.total_count = res.total_count
       })
+    },
+    // 点击上一页
+    prevClick () {
+      // console.log('上一页')
+      // 先将当前页减1
+      this.page = this.page - 1
+      // 点击后,重新请求当前页的数据
+      this.getArtcleList()
+    },
+    // 点击下一页
+    nextClick () {
+      // console.log('下一页')
+      // 先将当前页加1
+      this.page = this.page + 1
+      // 重新请求当前页
+      this.getArtcleList()
+    },
+    // 具体的页面跳转
+    // 要获取点击时的页码, 把页码当做参数传入
+    // 如果没有page参数, 即使点击了页码, 也不知道是第几页的.
+    pageChange (page) {
+      console.log('点击了页码' + page)
+      // 将点击的页码赋值给 this.page
+      this.page = page
+      this.getArtcleList()
     }
   },
   // 打开页时,执行 所以在这里调用文章列表的 方法getArtcleList()
