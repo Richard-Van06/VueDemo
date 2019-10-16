@@ -41,7 +41,7 @@
     <!-- 下面是文章显示区域 -->
     <el-card class="box-card mycard">
       <div slot="header" class="clearfix">
-        <span>共找到56947条符合条件的内容</span>
+        <span>共找到{{total_count}}条符合条件的内容</span>
       </div>
       <!-- 表格内容区域 -->
       <!-- 查询ele-ui可以知道 :data是数据源 -->
@@ -83,7 +83,9 @@
         </el-table-column>
       </el-table>
       <!-- 分页栏 -->
-      <el-pagination background layout="prev, pager, next" :total="1000">
+      <!-- el-pagination: 分页组件 background: 背景颜色(boolean)
+      :total: 显示的总页数(内部根据页容量自动换算,只需输入总内容条数) -->
+      <el-pagination background layout="prev, pager, next" :total="total_count">
       </el-pagination>
     </el-card>
   </div>
