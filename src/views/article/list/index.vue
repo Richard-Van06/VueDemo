@@ -87,11 +87,14 @@
       <!-- 分页栏 -->
       <!-- el-pagination: 分页组件 background: 背景颜色(boolean)
       :total: 显示的总页数(内部根据页容量自动换算,只需输入总内容条数)-->
+      <!-- :disabled="tableLoading" 根据页面加载是否在加载(tableLoading=true/false),
+      判断能否点击页面跳转 -->
       <el-pagination
         @current-change="pageChange"
         @next-click="nextClick"
         @prev-click="prevClick"
         background
+        :disabled="tableLoading"
         layout="prev, pager, next"
         :total="total_count"
       ></el-pagination>
