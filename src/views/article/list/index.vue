@@ -45,24 +45,23 @@
       </div>
       <!-- 表格内容区域 -->
       <!-- 查询ele-ui可以知道 :data是数据源 -->
-      <el-table :data="dataList" style="width: 100%">
+      <el-table v-loading="tableLoading" :stripe="true" :data="dataList" style="width: 100%">
         <!-- el-table-column 表格组件中的每一列 -->
         <!-- prop 当前行显示的数据(res)的属性 -->
         <!-- 图片的prop 不能直接用cover.images[0]
-        这样出来的只是图片的路径地址 -->
+        这样出来的只是图片的路径地址-->
         <el-table-column label="图片" width="180">
           <!-- 通过查找ele-ui自定义表格可知:
           这里添加了tamplate标签后,可以在这里自定义添加内容 还要添加slot-scope="scope"属性
-          这里不是显示prop属性对应的数据, 而是显示tamplate 中的内容 -->
+          这里不是显示prop属性对应的数据, 而是显示tamplate 中的内容-->
           <!-- 如果在tamplate中使用数据的话,必须通过scope.row 属性使用-->
           <!-- scope.row是当前行的数据源 -->
           <template slot-scope="scope">
             <!-- {{scope.row}} -->
-            <img class="myImg" :src="scope.row.cover.images[0]" alt="">
+            <img class="myImg" :src="scope.row.cover.images[0]" alt />
           </template>
         </el-table-column>
-        <el-table-column prop="title" label="标题" width="180">
-        </el-table-column>
+        <el-table-column prop="title" label="标题" width="180"></el-table-column>
         <el-table-column prop="status" label="状态" width="180">
           <tamplate slot-scope="scope">
             <span v-if="scope.row.status === 0">草稿</span>
@@ -72,21 +71,30 @@
             <span v-if="scope.row.status === 4">已删除</span>
           </tamplate>
         </el-table-column>
-        <el-table-column prop="pubdate" label="发布日期" width="180">
-        </el-table-column>
+        <el-table-column prop="pubdate" label="发布日期" width="180"></el-table-column>
         <!-- 操作是两个按钮, 不用prop -->
         <el-table-column label="操作">
           <template>
-            <el-button size="mini" type="primary"><i class="el-icon-edit"></i>修改</el-button>
-            <el-button size="mini" type="danger"><i class="el-icon-delete"></i>删除</el-button>
+            <el-button size="mini" type="primary">
+              <i class="el-icon-edit"></i>修改
+            </el-button>
+            <el-button size="mini" type="danger">
+              <i class="el-icon-delete"></i>删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
       <!-- 分页栏 -->
       <!-- el-pagination: 分页组件 background: 背景颜色(boolean)
-      :total: 显示的总页数(内部根据页容量自动换算,只需输入总内容条数) -->
-      <el-pagination @current-change="pageChange" @next-click="nextClick" @prev-click="prevClick" background layout="prev, pager, next" :total="total_count">
-      </el-pagination>
+      :total: 显示的总页数(内部根据页容量自动换算,只需输入总内容条数)-->
+      <el-pagination
+        @current-change="pageChange"
+        @next-click="nextClick"
+        @prev-click="prevClick"
+        background
+        layout="prev, pager, next"
+        :total="total_count"
+      ></el-pagination>
     </el-card>
   </div>
 </template>
@@ -113,38 +121,46 @@ export default {
       // 分页设置
       page: 1, // 默认为第一页
       // 每页的条数
-      per_page: 10 // 每页显示的内容20条
+      per_page: 10, // 每页显示的内容20条
+      // 加载进度条
+      tableLoading: true
     }
   },
   methods: {
     // 打开页面时, 需要请求文章列表的数据
     // 什么时候打开页面? 回忆生命周期的钩子函数--> created () {}
     getArtcleList () {
-      // 之前已经把axios设置为vue的原型属性, 所以这里用 this.$http
-      // 发送请求后出现401 因为没有携带 token
-      // token要写在请求头中, 以键值对的方式携带  Authorization: token
-      this.$http({
-        url: '/articles',
-        method: 'GET',
-        params: {
-          page: this.page,
-          per_page: this.per_page
-        }
-        // headers: {
-        //   // 模板字符串 `${}`
-        //   Authorization: `Bearer ${userInfo.token}`
-        // }
-      }).then(res => {
-        console.log(res)
-        // 获取响应的数据后, 将数据源保存到datalist 中
-        // this.dataList = res.data.data.results
-        // 通过响应拦截器中的 return设置 简化了数据
-        this.dataList = res.results
-        // 保存数据总条数
-        // this.total_count = res.data.data.total_count
-        // 数据简化, 同上
-        this.total_count = res.total_count
-      })
+      // 发送请求前(获取数据前), 加载进度开启
+      this.tableLoading = true
+      setTimeout(() => {
+        // 之前已经把axios设置为vue的原型属性, 所以这里用 this.$http
+        // 发送请求后出现401 因为没有携带 token
+        // token要写在请求头中, 以键值对的方式携带  Authorization: token
+        this.$http({
+          url: '/articles',
+          method: 'GET',
+          params: {
+            page: this.page,
+            per_page: this.per_page
+          }
+          // headers: {
+          //   // 模板字符串 `${}`
+          //   Authorization: `Bearer ${userInfo.token}`
+          // }
+        }).then(res => {
+          console.log(res)
+          // 获取响应的数据后, 将数据源保存到datalist 中
+          // this.dataList = res.data.data.results
+          // 通过响应拦截器中的 return设置 简化了数据
+          this.dataList = res.results
+          // 保存数据总条数
+          // this.total_count = res.data.data.total_count
+          // 数据简化, 同上
+          this.total_count = res.total_count
+          // 发送请求后(获取数据后), 加载进度结束
+          this.tableLoading = false
+        })
+      }, 2000)
     },
     // 点击上一页
     prevClick () {
@@ -181,7 +197,7 @@ export default {
 
 <style lang="less" scoped>
 .mycard {
-  margin-top:20px;
+  margin-top: 20px;
 }
 .myImg {
   width: 150px;

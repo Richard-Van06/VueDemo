@@ -109,7 +109,9 @@ export default {
       }).then(res => {
         // console.log(res)
         // 先获取信息
-        let userInfo = res.data.data
+        // let userInfo = res.data.data
+        // 由于在响应拦截器中设置了返回的数据为 res.data.data 所以, 这里只需要res就行了
+        let userInfo = res
         // 将用户的信息保存到localstorage 中
         window.localStorage.setItem('userInfo', JSON.stringify(userInfo))
         // 只要进入这个方法中, 说明登录成功
